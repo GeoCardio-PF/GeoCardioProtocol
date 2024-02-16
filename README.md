@@ -1,2 +1,2 @@
 # GeoCardioProtocol
-El Proyecto tiene como objetivo el desarrollo de un sistema de monitoreo cardiaco georreferenciado, el cual contara con una página web en donde se podrán observar las variables sensadas por el RF-V48 y la localización de la persona monitoreada, tanto datos históricos, como en tiempo real.
+The Project aims to develop a georeferenced cardiac monitoring system, which will have a web page where the variables sensed by the RF-V48 and the location of the monitored person can be observed, both historical data and live data.
