@@ -6,10 +6,10 @@ class LocationData{
         
         const parts = dataString.split(',');
 
-        this.timestamp = todatetime(parts[1], parts[2]);
+        this.timestamp = this.todatetime(parts[1], parts[2]);
         this.validity = parts[3];
-        this.latitude = position(parseFloat(parts[4]),parts[5]);
-        this.longitude = position(parseFloat(parts[4]),parts[5]);
+        this.latitude = this.position(parseFloat(parts[4]),parts[5]);
+        this.longitude = this.position(parseFloat(parts[4]),parts[5]);
         this.speed = parseFloat(parts[8]);
         this.direction = parseInt(parts[9]);
         this.satelite = parseInt(parts[11]);
