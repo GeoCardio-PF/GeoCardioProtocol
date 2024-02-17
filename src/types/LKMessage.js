@@ -5,7 +5,7 @@ class LKMessage {
     handle(parts, socket) {
         const manufacturer = parts[0];
         const id = parts[1];
-        // Procesa aquí el mensaje LK
+        // LK message is processed.
         
         
         //content of the response
@@ -15,7 +15,7 @@ class LKMessage {
         let lengthInHex = content.length.toString(16);
         let length = lengthInHex.padStart(4, '0');
 
-        // Formato de respuesta a terminal
+        // Terminal response format
         let response = `[${manufacturer}*${id}*${length}*${content}]`;
         console.log(`Enviando: ${response}`);
         socket.write(response);

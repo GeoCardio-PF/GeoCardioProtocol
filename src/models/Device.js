@@ -1,10 +1,10 @@
 class Device {
     constructor(id) {
         this.id = id;
-        // Otros atributos relevantes, como estado de la batería, paso, etc.
+        // Other relevant attributes like battery status, steps, etc.
     }
 
-    // Métodos para manejar el estado del dispositivo, como actualizar batería, paso, etc.
+    // Methods to control the device's status as update battery, steps, etc.
 }
 
 module.exports = Device;

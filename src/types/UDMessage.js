@@ -8,9 +8,9 @@ class UDMessage {
 
         const data = parts[3];
         const locData = new LocationData(data);
-        // Procesa aquí el mensaje UD
+        // UD message processed.
         
-        // Imprimir la información procesada en la consola
+        // Printing the processed information
         console.log(`Timestamp: ${locData.timestamp}`);
         console.log(`Validity: ${locData.validity}`);
         console.log(`Latitude: ${locData.latitude}`);
@@ -28,7 +28,7 @@ class UDMessage {
     
 
         //POSITION DATA REPORT
-        //no se responde a terminal
+        //No response to terminal.
     }
 }
 

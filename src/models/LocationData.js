@@ -27,7 +27,7 @@ class LocationData{
         return coordinate;
     }
     todatetime(date,time){
-        const year = `20${date.slice(4,6)}`; // Asume un año 2000+
+        const year = `20${date.slice(4,6)}`; // Assumes a year greater than 1999
         const month = date.slice(2,4);
         const day = date.slice(0,2);
         const hours = time.slice(0,2);
