@@ -71,7 +71,7 @@ class Server {
                     console.log(`Message sent to ${client.clientId}: ${message}`);
                 }
             });
-            rl.prompt(); // Vuelve a mostrar el prompt
+            rl.prompt();
         });
     }
 }
