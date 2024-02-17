@@ -37,3 +37,4 @@ class LocationData{
         return dateTimeString
     }
 }
+module.exports = LocationData;
