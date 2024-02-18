@@ -5,7 +5,8 @@ const LocationData = require('../models/LocationData')
 //then regular reporting until receive the alarm confirmation date
 class ALMessage {
     handle(parts, socket) {
-
+        const manufacturer = parts[0];
+        const id = parts[1];
         const data = parts[3];
         const locData = new LocationData(data);
         // Procesa aquí el mensaje UD
