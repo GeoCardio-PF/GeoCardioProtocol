@@ -16,7 +16,10 @@ class MessageHandler {
                     const lkMessage = new LKMessage();
                     lkMessage.handle(parts, socket);
                     break;
-                
+                case parts[3].includes('TKQ'):
+                    const tkqMessage = new TKQMessage();
+                    tkqMessage.handle(parts, socket);
+                    break;
                 case parts[3].includes('UD'):
                     const udMessage = new UDMessage();
                     udMessage.handle(parts, socket);
