@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "The Project aims to develop a georeferenced cardiac monitoring system, which will have a web page where the variables sensed by the RF-V48 and the location of the monitored person can be observed, both historical data and live data.",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "test": "node index.js"
   },
@@ -16,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/GeoCardio-PF/GeoCardioProtocol/issues"
   },
-  "homepage": "https://github.com/GeoCardio-PF/GeoCardioProtocol#readme"
+  "homepage": "https://github.com/GeoCardio-PF/GeoCardioProtocol#readme",
+  "dependencies": {
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.1"
+  }
 }
