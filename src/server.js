@@ -40,7 +40,7 @@ class Server {
                         where: { DeviceId: clientId },
                         defaults: {
                             // Default values
-                            clientId: clientId,
+                            DeviceId: clientId,
                             Name: manufacturer,
                         }
                     });
