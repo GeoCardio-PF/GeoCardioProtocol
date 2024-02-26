@@ -13,7 +13,7 @@ class Server {
         const server = net.createServer((socket) => {
 
             console.log('Cliente conectado');
-            const clientInfo = { socket,manufacturerId: null, clientId: null };
+            const clientInfo = { socket,manufacturerId: null, Name: null };
             this.clients.push(clientInfo)
 
 
