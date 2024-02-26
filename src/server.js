@@ -1,7 +1,7 @@
 const net = require('net');
 const MessageHandler = require('./messageHandler');
 const readline = require('readline');
-
+const { Device } = require('../dbServer')
 
 class Server {
     constructor(port) {
@@ -25,14 +25,32 @@ class Server {
                 console.log('family: ',family)
                 console.log('host: ',host)
             })
-            socket.on('data', (data) => {
+            socket.on('data', async (data) => {
                 const dataString = data.toString();
                 const parts = dataString.slice(1, -1).split('*');
-                const manufacturer = parts[0]
+                const manufacturer = parts[0];
                 const clientId = parts[1];
+
                 // Update ID of the device
                 clientInfo.clientId = clientId;
                 clientInfo.manufacturerId = manufacturer;
+
+                try {
+                    const [device, created] = await Device.findOrCreate({
+                        where: { DeviceId: clientId },
+                        defaults: {
+                            // Default values
+                            clientId: clientId,
+                            Name: manufacturer,
+                        }
+                    });
+            
+                    if (created) {
+                        console.log('Device registered:', device);
+                    }
+                } catch (error) {
+                    console.error('Error finding or creating the entry:', error);
+                }
 
                 MessageHandler.processMessage(data, socket);
             });

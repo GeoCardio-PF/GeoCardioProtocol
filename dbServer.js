@@ -5,6 +5,12 @@ const sequelize = new Sequelize(config.database,config.username,config.password,
 	host: config.host,
 	dialect: config.dialect,
 	port: config.port,
+	dialectOptions: {
+		ssl: {
+			require: true,
+			rejectUnauthorized: false // Nota: Establecer en false solo para pruebas. Para producción, configura los certificados apropiadamente.
+		}
+	}
 });
 
 const Device = sequelize.define('Device', {
@@ -38,13 +44,17 @@ const Position = sequelize.define('Position', {
 		allowNull: false,
 	},
 	Latitude: {
-		type: DataTypes.DECIMAL(3,6),
+		type: DataTypes.DECIMAL(9,6),
 		allowNull: false,
 	},
 	Longitude: {
-		type: DataTypes.DECIMAL(4,6),
+		type: DataTypes.DECIMAL(10,6),
 		allowNull: false,
 	},
+	Accuracy: {
+		type: DataTypes.DECIMAL(5,2),
+        allowNull: true,
+	}
 },{
 	freezeTableName: true,
 	timestamps: false,
