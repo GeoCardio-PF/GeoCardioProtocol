@@ -28,8 +28,8 @@ class LocationData{
         this.accuracy = parts[-1];
 
 
-        const infoRedesMoviles = extraerInfoRedesMoviles(parts);
-        const infoRedesWiFi = extraerInfoRedesWiFi(parts, infoRedesMoviles.indiceFinal);
+        const infoRedesMoviles = this.extraerInfoRedesMoviles(parts);
+        const infoRedesWiFi = this.extraerInfoRedesWiFi(parts, infoRedesMoviles.indiceFinal);
 
         const payload = {
             "homeMobileCountryCode": parseInt(this.mcc, 10),
