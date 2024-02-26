@@ -1,7 +1,7 @@
 const ALMessage = require('./types/ALMessage');
 const LKMessage = require('./types/LKMessage');
 const UDMessage = require('./types/UDMessage');
-const TKQMessage = require('/types/TKQMessage');
+const TKQMessage = require('./types/TKQMessage');
 class MessageHandler {
     static processMessage(data, socket) {
         const message = data.toString();
