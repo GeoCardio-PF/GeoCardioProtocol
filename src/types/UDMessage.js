@@ -7,12 +7,14 @@ const path = require('path');
 //information according to the upload time, does not need the platform reply.
 class UDMessage {
     async handle(parts, socket) {
-        const id = parts[2];
+        const id = parts[1];
         const data = parts[3];
         
         
          
         const locData = new LocationData(data);
+        
+        await locData.parseData(data);
         // UD message processed.
         
         // Printing the processed information

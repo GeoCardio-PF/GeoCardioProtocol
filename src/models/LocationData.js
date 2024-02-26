@@ -25,7 +25,9 @@ class LocationData{
         this.stations = parts[17];
         this.mcc = parts[19];
         this.mnc = parts[20];
-        this.accuracy = parts[-1];
+        if (this.validity === 'V') {
+            this.accuracy = 0.0;
+        }
 
 
         const infoRedesMoviles = this.extraerInfoRedesMoviles(parts);
