@@ -1,5 +1,5 @@
 const LocationData = require('../models/LocationData')
-const { Position } = require('../dbServer')
+const { Position } = require('../../dbServer')
 //Alarm data report
 //Terminal sends alarm information to the platform after alarming
 //if the terminal has not received the reply

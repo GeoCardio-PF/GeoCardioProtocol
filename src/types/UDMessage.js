@@ -1,5 +1,5 @@
 const LocationData = require('../models/LocationData')
-const { Position } = require('../dbServer')
+const { Position } = require('../../dbServer')
 //Position data report
 //The terminal reports the position and the condition 
 //information according to the upload time, does not need the platform reply.
