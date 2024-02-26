@@ -9,9 +9,8 @@ class UDMessage {
     async handle(parts, socket) {
         const id = parts[2];
         const data = parts[3];
-        this.guardarTrama(parts);
-        /**
-          
+        
+        
          
         const locData = new LocationData(data);
         // UD message processed.
@@ -36,24 +35,8 @@ class UDMessage {
         }
         //POSITION DATA REPORT
         //No response to terminal.
-        */
     }
-    guardarTrama(dataString) {
-        // Define la ruta del archivo donde se guardarán las tramas
-        const filePath = path.join(__dirname, 'tramas_brutas.txt');
     
-        // Crea una trama con un salto de línea para separar cada entrada
-        const formattedData = `${dataString}\n`;
-    
-        // Agrega la trama al archivo, creando el archivo si no existe
-        fs.appendFile(filePath, formattedData, (err) => {
-            if (err) {
-                console.error('Error al guardar la trama:', err);
-            } else {
-                console.log('Trama guardada con éxito.');
-            }
-        });
-    }
 }
 
 module.exports = UDMessage;

@@ -11,66 +11,84 @@ class LocationData{
 
         this.timestamp = this.parseDateTime(parts[1], parts[2]);
         this.validity = parts[3];
-        this.latitude = this.parsePosition(parseFloat(parts[4]),parts[5]);
-        this.longitude = this.parsePosition(parseFloat(parts[6]),parts[7]);
+        this.latitude = this.parsePosition(parseFloat(parts[4]), parts[5]);
+        this.longitude = this.parsePosition(parseFloat(parts[6]), parts[7]);
         this.speed = parseFloat(parts[8]);
         this.direction = parseInt(parts[9]);
+        this.elevation = parseInt(parts[10]);
         this.satelite = parseInt(parts[11]);
         this.gsmIntensity = parseInt(parts[12]);
         this.power = parseInt(parts[13]);
         this.steps = parseInt(parts[14]);
         this.roll = parseInt(parts[15]);
         this.terminal = parts[16];
-        this.station = parts[17];
-        this.delay = parts[18];
+        this.stations = parts[17];
         this.mcc = parts[19];
         this.mnc = parts[20];
-        this.sid = parts[21];
-        this.nid = parts[22];
-        this.bid = parts[23];
-        this.amount = parts[24];
-        this.wifi1name = parts[25];
-        this.wifi1mac = parts[26];
-        this.wifi1sg = parts[27];
-        this.wifi2name = parts[28];
-        this.wifi2mac = parts[29];
-        this.wifi2sg = parts[30];
-        this.wifi3name = parts[31];
-        this.wifi3mac = parts[32];
-        this.wifi3sg = parts[33];
-        this.wifi4name = parts[34];
-        this.wifi4mac = parts[35];
-        this.wifi4sg = parts[36];
-        this.wifi5name = parts[37];
-        this.wifi5mac = parts[38];
-        this.wifi5sg = parts[39];
-        this.accuracy = parts[40];
+        this.accuracy = parts[-1];
 
-        if (this.validity === "V") {
-            await this.extractWiFiAccessPoints(parts);
+
+        const infoRedesMoviles = extraerInfoRedesMoviles(parts);
+        const infoRedesWiFi = extraerInfoRedesWiFi(parts, infoRedesMoviles.indiceFinal);
+
+        const payload = {
+            "homeMobileCountryCode": parseInt(this.mcc, 10),
+            "homeMobileNetworkCode": parseInt(this.mnc, 10),
+            "radioType": "lte",
+            "considerIp": false,
+            "cellTowers": infoRedesMoviles.CellTowers,
+            "wifiAccessPoints": infoRedesWiFi
         }
+
+        await this.fetchLocationFromAPI(payload);
 
         
 
     }
-    async extractWiFiAccessPoints(parts) {
-        let wifiAccessPoints = [];
-        for (let i = 1; i <= 5; i++) {
-            const macAddress = this[`wifi${i}mac`];
-            const signalStrength = parseInt(this[`wifi${i}sg`], 10);
-            if (macAddress && !isNaN(signalStrength)) {
-                wifiAccessPoints.push({ macAddress, signalStrength });
+    extraerInfoRedesMoviles(parts) {
+        // Encuentra el índice donde comienza la información de redes móviles
+        // Esto puede ajustarse si la posición inicial cambia basado en la estructura de la trama
+        const indiceInicial = 17; // Este índice puede necesitar ajustes
+        const cantidadEstaciones = parseInt(parts[indiceInicial], 10);
+
+        if (cantidadEstaciones != 0) {
+            
+
+            let estaciones = [];
+            let indiceActual = indiceInicial + 4;
+    
+            for (let i = 0; i < cantidadEstaciones; i++) {
+                // Aquí asumimos que cada estación base tiene 5 parts: MCC, MNC, LAC, CellID, señal
+                const sid = parts[indiceActual++];
+                const nid = parts[indiceActual++];
+                const bid = parts[indiceActual++];
+                estaciones.push({ "cellId":parseInt(nid,10),"locationAreaCode":parseInt(sid,10),"signalStrength":parseInt(bid,10)});
             }
+            
+            return { CellTowers: estaciones, indiceFinal: indiceActual };
+        } else {
+            return { CellTowers: [], indiceFinal: 21 };
         }
-
-        const data = {
-            considerIp: "false",
-            wifiAccessPoints: wifiAccessPoints,
-        };
-
-       await this.fetchLocationFromAPI(data);
     }
 
+    extraerInfoRedesWiFi(partes, indiceInicioWiFi) {
+        const cantidadWiFi = parseInt(partes[indiceInicioWiFi], 10);
+    
+        let wifiAccessPoints = [];
+        let indiceActual = indiceInicioWiFi + 1;
+    
+        for (let i = 0; i < cantidadWiFi; i++) {
+            // Asumiendo que cada estación Wi-Fi tiene 3 partes: nombre (vacío), MAC, señal
+            indiceActual++; // Saltar el nombre vacío
+            const mac = partes[indiceActual++];
+            const signalStrength = partes[indiceActual++];
+            wifiAccessPoints.push({ "macAddress":mac, "signalStrength":parseInt(signalStrength,10) });
+        }
+    
+        return wifiAccessPoints;
+    }
+
+    
     async fetchLocationFromAPI(data) {
         console.log(data);
         try {

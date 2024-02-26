@@ -25,7 +25,7 @@ class ALMessage {
         let lengthInHex = content.length.toString(16);
         let length = lengthInHex.padStart(4, '0');
 
-        /*
+        
         try {
             const newPosition = await Position.create({
                 DeviceId: id, // Asegúrate de obtener el DeviceId apropiado
@@ -38,7 +38,7 @@ class ALMessage {
         } catch (error) {
             console.error('Error saving new Position:', error);
         }
-        */
+       
         // Terminal response format
         let response = `[${manufacturer}*${id}*${length}*${content}]`;
         console.log(`Enviando: ${response}`);
