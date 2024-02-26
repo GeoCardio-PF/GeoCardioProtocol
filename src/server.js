@@ -66,7 +66,7 @@ class Server {
             console.log(`Server listening on port ${this.port}`);
         });
 
-        this.initConsoleInput();
+        //this.initConsoleInput();
     }
     initConsoleInput() {
         const rl = readline.createInterface({
