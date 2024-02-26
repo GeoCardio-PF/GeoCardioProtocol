@@ -45,15 +45,15 @@ const Position = sequelize.define('Position', {
 		allowNull: false,
 	},
 	Latitude: {
-		type: DataTypes.DECIMAL(9,6),
+		type: DataTypes.DECIMAL(9,7),
 		allowNull: false,
 	},
 	Longitude: {
-		type: DataTypes.DECIMAL(10,6),
+		type: DataTypes.DECIMAL(9,6),
 		allowNull: false,
 	},
 	Accuracy: {
-		type: DataTypes.DECIMAL(5,2),
+		type: DataTypes.DECIMAL(6,3),
         allowNull: true,
 	}
 },{
