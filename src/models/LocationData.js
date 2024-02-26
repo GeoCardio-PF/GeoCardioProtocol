@@ -5,7 +5,7 @@ class LocationData{
     constructor(dataString) {
         this.parseData(dataString);
     }
-    parseData(dataString) {
+    async parseData(dataString) {
         
         const parts = dataString.split(',');
 
@@ -47,13 +47,13 @@ class LocationData{
         this.accuracy = parts[40];
 
         if (this.validity === "V") {
-            this.extractWiFiAccessPoints(parts);
+            await this.extractWiFiAccessPoints(parts);
         }
 
         
 
     }
-    extractWiFiAccessPoints(parts) {
+    async extractWiFiAccessPoints(parts) {
         let wifiAccessPoints = [];
         for (let i = 1; i <= 5; i++) {
             const macAddress = this[`wifi${i}mac`];
@@ -68,10 +68,11 @@ class LocationData{
             wifiAccessPoints: wifiAccessPoints,
         };
 
-        this.fetchLocationFromAPI(data);
+       await this.fetchLocationFromAPI(data);
     }
 
     async fetchLocationFromAPI(data) {
+        console.log(data);
         try {
             const response = await axios.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBWemHD1t05Q8_RaZi-WjXqRpzsfytgVtM', data);
             console.log('Ubicación:', response.data);
