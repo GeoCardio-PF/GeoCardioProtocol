@@ -11,7 +11,9 @@ class ALMessage {
         const data = parts[3];
         //const locData = new LocationData(data);
         // Procesa aquí el mensaje UD
-
+        const locData = new LocationData(data);
+        
+        await locData.parseData(data);
          // Printing the processed information
          console.log(`Timestamp: ${locData.timestamp}`);
          console.log(`Latitude: ${locData.latitude}`);
