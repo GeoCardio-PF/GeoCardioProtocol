@@ -2,6 +2,7 @@ const net = require('net');
 const MessageHandler = require('./messageHandler');
 const readline = require('readline');
 const { Device } = require('../dbServer')
+import { promises as fs } from 'fs'; // Importar fs.promises
 
 class Server {
     constructor(port) {
@@ -57,6 +58,15 @@ class Server {
                     }
                 } catch (error) {
                     console.error('Error finding or creating the entry:', error);
+                }
+                const messageLength = Buffer.byteLength(dataString);
+                const logMessage = `Mensaje recibido: ${dataString} con longitud de ${messageLength} bytes\n`;
+
+                // Añadir al archivo log.txt de forma asíncrona
+                try {
+                    await fs.appendFile('log.txt', logMessage);
+                } catch (err) {
+                    console.error('Error:', err);
                 }
 
                 MessageHandler.processMessage(data, socket);
