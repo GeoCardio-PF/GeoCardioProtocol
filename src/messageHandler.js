@@ -2,6 +2,9 @@ const ALMessage = require('./types/ALMessage');
 const LKMessage = require('./types/LKMessage');
 const UDMessage = require('./types/UDMessage');
 const TKQMessage = require('./types/TKQMesage');
+const BPHRTMessage = require('./types/BPHRTMessage');
+const OXYGENMessage = require('./types/OXYGENMessage');
+const BTEMP2Message = require('./types/BTEMP2Message');
 
 class MessageHandler {
     static processMessage(data, socket) {
@@ -28,6 +31,22 @@ class MessageHandler {
                 case parts[3].includes('AL'):
                     const alMessage = new ALMessage();
                     alMessage.handle(parts, socket);
+                    break;
+                case parts[3].includes('bphrt'):
+                    const bphrtMessage = new BPHRTMessage();
+                    bphrtMessage.handle(parts, socket);
+                    break;
+                case parts[3].includes('hrstart'):
+                    break;
+                case parts[3].includes('oxygen'):
+                    const oxygenMessage = new OXYGENMessage();
+                    oxygenMessage.handle(parts, socket);
+                    break;
+                case parts[3].includes('btemp2'):
+                    const btemp2Message = new BTEMP2Message();
+                    btemp2Message.handle(parts, socket);
+                    break;
+                case parts[3].includes('bodytemp2'):
                     break;
                 // TODO: ADD MORE CASES
                 default:

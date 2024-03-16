@@ -13,11 +13,18 @@ class Server {
         const server = net.createServer((socket) => {
 
             console.log('Cliente conectado');
-            const clientInfo = { socket,manufacturerId: null, Name: null };
+            const clientInfo = { socket,manufacturerId: null, Name: null ,timerhrst, timerTemp: null};
             this.clients.push(clientInfo)
 
+            // Inicia un temporizador para cada cliente conectado
+            clientInfo.timerhrst = setInterval(() => {
+                this.sendMessageToClient(clientInfo, 'hrtstart,1');
+            }, 600000); // 300000 ms = 5 minutos
 
-
+            // Inicia un temporizador para cada cliente conectado
+            clientInfo.timerTemp = setInterval(() => {
+                this.sendMessageToClient(clientInfo, 'BODYTEMP2');
+            }, 300000); // 300000 ms = 5 minutos
 
             socket.on('lookup', (err, ip, family, host) => {
                 console.log('Conection from: ', ip)
@@ -58,6 +65,12 @@ class Server {
             socket.on('close', () => {
                 console.log('Cliente desconectado');
                 // Removes socket and info of the device disconnected
+                if (clientInfo.timerhrst) {
+                    clearInterval(clientInfo.timerhrst);
+                }
+                if (clientInfo.timerTemp) {
+                    clearInterval(clientInfo.timerTemp);
+                }
                 this.clients = this.clients.filter(client => client.socket !== socket);
             });
         });
@@ -68,6 +81,16 @@ class Server {
 
         //this.initConsoleInput();
     }
+
+    sendMessageToClient(client, message) {
+        if (client.clientId) {
+            const len = Buffer.byteLength(message).toString(16).toUpperCase().padStart(4, '0');
+            const formattedMessage = `[${client.manufacturerId}*${client.clientId}*${len}*${message}]`; 
+            client.socket.write(formattedMessage);
+            console.log(`Message sent to ${client.clientId}: ${formattedMessage}`);
+        }
+    }
+
     initConsoleInput() {
         const rl = readline.createInterface({
             input: process.stdin,
