@@ -101,7 +101,7 @@ const Temperature = sequelize.define('Temperature',{
 		allowNull: false,
 	},
 	Temperature: {
-		type: DataTypes.INTEGER,
+		type: DataTypes.DOUBLE,
 		allowNull: false,
 	},
 },{
