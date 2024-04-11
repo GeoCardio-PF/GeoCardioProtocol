@@ -20,7 +20,7 @@ class Server {
             // Inicia un temporizador para cada cliente conectado
             clientInfo.timerhrst = setInterval(() => {
                 this.sendMessageToClient(clientInfo, 'hrtstart,1');
-            }, 600000); // 300000 ms = 5 minutos
+            }, 600000); // 600000 ms = 10 minutos
 
             // Inicia un temporizador para cada cliente conectado
             clientInfo.timerTemp = setInterval(() => {
@@ -33,6 +33,7 @@ class Server {
                 console.log('family: ',family)
                 console.log('host: ',host)
             })
+            
             socket.on('data', async (data) => {
                 const dataString = data.toString();
                 const parts = dataString.slice(1, -1).split('*');

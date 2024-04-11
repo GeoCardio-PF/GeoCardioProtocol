@@ -29,7 +29,7 @@ class LocationData{
             this.accuracy = 0.0;
         }
 
-
+    
         const infoRedesMoviles = this.extraerInfoRedesMoviles(parts);
         const infoRedesWiFi = this.extraerInfoRedesWiFi(parts, infoRedesMoviles.indiceFinal);
 
