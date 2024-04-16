@@ -1,54 +1,31 @@
-	const fs = require('fs');
+const fs = require('fs');
 const { HeartRate } = require('./dbServer');
-
-// Función para insertar los datos de frecuencia cardíaca en la base de datos
-async function insertHeartRateDataFromFile(filePath, deviceId) {
+async function generateHeartRateDataInDatabase(startDate, endDate, minHeartRate, maxHeartRate) {
   try {
-    // Leer el archivo de texto línea por línea
-    const data = fs.readFileSync(filePath, 'utf-8');
-    const lines = data.trim().split('\n');
+    let currentDate = new Date(startDate);
 
-    // Procesar cada línea y crear instancias de HeartRate
-    const heartRateData = lines.map(line => {
-      const [heartRate, timeStamp] = line.split(',');
-      return { DeviceId: deviceId, HeartRate: parseInt(heartRate), TimeStamp: new Date(timeStamp) };
-    });
+    while (currentDate <= endDate) {
+      let heartRate;
+      heartRate = getRandomHeartRate(minHeartRate, maxHeartRate);
+      const timestamp = currentDate;
 
-    // Insertar los registros en la base de datos
-    await HeartRate.bulkCreate(heartRateData);
+      // Insertar los datos de frecuencia cardÃ­aca en la base de datos
+      await HeartRate.create({ DeviceId: '9705083317', HeartRate: heartRate, TimeStamp: timestamp });
 
-    console.log(`Datos de frecuencia cardíaca desde ${filePath} insertados correctamente para el dispositivo ${deviceId}.`);
+      // Avanzar al siguiente intervalo de 10 minutos
+      currentDate.setMinutes(currentDate.getMinutes() + 10);
+    }
+
+    console.log('Datos de frecuencia cardÃ­aca generados y almacenados en la base de datos.');
   } catch (error) {
-    console.error(`Error al insertar datos de frecuencia cardíaca desde ${filePath}:`, error);
+    console.error('Error al generar y almacenar datos de frecuencia cardÃ­aca:', error);
   }
 }
 
-// Función para mostrar la información de la tabla HeartRate en la consola
-async function displayHeartRateData() {
-  try {
-    // Obtener todos los registros de la tabla HeartRate
-    const heartRates = await HeartRate.findAll();
+// Llamar a la funciÃ³n para generar y almacenar datos de frecuencia cardÃ­aca en la base de datos
+generateHeartRateDataInDatabase(new Date('2024-04-01'), new Date('2024-04-30'), 60, 110);
 
-    // Mostrar la información en la consola
-    console.log('Registros de frecuencia cardíaca:');
-    heartRates.forEach(heartRate => {
-      console.log(`ID: ${heartRate.HeartRateId}, DeviceId: ${heartRate.DeviceId}, HeartRate: ${heartRate.HeartRate}, TimeStamp: ${heartRate.TimeStamp}`);
-    });
-  } catch (error) {
-    console.error('Error al obtener los datos de frecuencia cardíaca:', error);
-  }
+// FunciÃ³n para generar un nÃºmero aleatorio en un rango dado
+function getRandomHeartRate(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
-// Llamar a la función para mostrar la información de la tabla HeartRate
-displayHeartRateData(); 
-
-// Llamar a la función para insertar los datos de los archivos de texto
-//insertHeartRateDataFromFile('..\\..\\heart_rate_data_2024-03-13.txt', '9705083317'); // Cambiar 'Device1' al ID deseado
-//insertHeartRateDataFromFile('..\\..\\heart_rate_data_2024-03-14.txt', '9705083317'); // Cambiar 'Device2' al ID deseado
-//insertHeartRateDataFromFile('..\\..\\heart_rate_data_2024-03-15.txt', '9705083317'); // Cambiar 'Device1' al ID deseado
-//insertHeartRateDataFromFile('..\\..\\heart_rate_data_2024-03-16.txt', '9705083317'); // Cambiar 'Device2' al ID deseado
-//insertHeartRateDataFromFile('..\\..\\heart_rate_data_2024-03-17.txt', '9705083317'); // Cambiar 'Device1' al ID deseado
-//insertHeartRateDataFromFile('..\\..\\heart_rate_data_2024-03-18.txt', '9705083317'); // Cambiar 'Device2' al ID deseado
-//insertHeartRateDataFromFile('..\\..\\heart_rate_data_2024-03-19.txt', '9705083317'); // Cambiar 'Device1' al ID deseado
-//insertHeartRateDataFromFile('..\\..\\heart_rate_data_2024-03-20.txt', '9705083317'); // Cambiar 'Device2' al ID deseado
-//insertHeartRateDataFromFile('..\\..\\heart_rate_data_2024-03-21.txt', '9705083317'); // Cambiar 'Device2' al ID deseado
