@@ -15,10 +15,9 @@ class BPHRTMessage {
         try {
             const newHeartRate = await HeartRate.create({
                 DeviceId: id, // Asegúrate de obtener el DeviceId apropiado
-                TimeStamp: new Date(locData.timestamp),
+                TimeStamp: new Date(),
                 HeartRate: heartRateValue
             });
-            console.log('New HeartRate saved:', newHeartRate);
         } catch (error) {
             console.error('Error saving new HeartRate:', error);
         }

@@ -2,8 +2,7 @@ const net = require('net');
 const MessageHandler = require('./messageHandler');
 const readline = require('readline');
 const { Device } = require('../dbServer')
-import { promises as fs } from 'fs'; // Importar fs.promises
-
+const fs = require('fs').promises;
 class Server {
     constructor(port) {
         this.port = port;
@@ -14,7 +13,7 @@ class Server {
         const server = net.createServer((socket) => {
 
             console.log('Cliente conectado');
-            const clientInfo = { socket,manufacturerId: null, Name: null ,timerhrst, timerTemp: null};
+            const clientInfo = { socket,manufacturerId: null, Name: null ,timerhrst: null, timerTemp: null};
             this.clients.push(clientInfo)
 
             // Inicia un temporizador para cada cliente conectado

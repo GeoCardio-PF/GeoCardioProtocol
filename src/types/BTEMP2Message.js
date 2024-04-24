@@ -5,7 +5,7 @@ class BTEMP2Message {
         const id = parts[1];
         const dataParts = parts[3].split(',');
         
-        const temperatureValue = parseFloat(dataParts[2]);
+        const temperatureValue = parseInt(dataParts[2]);
 
         try {
             const newTemperature = await Temperature.create({
@@ -13,8 +13,6 @@ class BTEMP2Message {
                 TimeStamp: new Date(),
                 Temperature: temperatureValue
             });
-            console.log('New Temperature saved:', newTemperature);
-
         } catch (error) {
             console.error('Error saving new Temperature:', error);
         }
