@@ -17,14 +17,14 @@ class Server {
             this.clients.push(clientInfo)
 
             // Inicia un temporizador para cada cliente conectado
-            clientInfo.timerhrst = setInterval(() => {
-                this.sendMessageToClient(clientInfo, 'hrtstart,1');
-            }, 600000); // 600000 ms = 10 minutos
+            //clientInfo.timerhrst = setInterval(() => {
+            //    this.sendMessageToClient(clientInfo, 'hrtstart,1');
+            //}, 600000); // 600000 ms = 10 minutos
 
             // Inicia un temporizador para cada cliente conectado
-            clientInfo.timerTemp = setInterval(() => {
-                this.sendMessageToClient(clientInfo, 'BODYTEMP2');
-            }, 300000); // 300000 ms = 5 minutos
+            //clientInfo.timerTemp = setInterval(() => {
+            //    this.sendMessageToClient(clientInfo, 'BODYTEMP2');
+            //}, 300000); // 300000 ms = 5 minutos
 
             socket.on('lookup', (err, ip, family, host) => {
                 console.log('Conection from: ', ip)
@@ -75,13 +75,13 @@ class Server {
             socket.on('close', () => {
                 console.log('Cliente desconectado');
                 // Removes socket and info of the device disconnected
-                if (clientInfo.timerhrst) {
-                    clearInterval(clientInfo.timerhrst);
-                }
-                if (clientInfo.timerTemp) {
-                    clearInterval(clientInfo.timerTemp);
-                }
-                this.clients = this.clients.filter(client => client.socket !== socket);
+                //if (clientInfo.timerhrst) {
+                //    clearInterval(clientInfo.timerhrst);
+                //}
+                //if (clientInfo.timerTemp) {
+                //   clearInterval(clientInfo.timerTemp);
+                //}
+                //this.clients = this.clients.filter(client => client.socket !== socket);
             });
         });
 
