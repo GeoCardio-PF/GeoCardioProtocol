@@ -16,22 +16,6 @@ class Server {
             const clientInfo = { socket,manufacturerId: null, Name: null ,timerhrst: null, timerTemp: null};
             this.clients.push(clientInfo)
 
-            // Inicia un temporizador para cada cliente conectado
-            //clientInfo.timerhrst = setInterval(() => {
-            //    this.sendMessageToClient(clientInfo, 'hrtstart,1');
-            //}, 600000); // 600000 ms = 10 minutos
-
-            // Inicia un temporizador para cada cliente conectado
-            //clientInfo.timerTemp = setInterval(() => {
-            //    this.sendMessageToClient(clientInfo, 'BODYTEMP2');
-            //}, 300000); // 300000 ms = 5 minutos
-
-            socket.on('lookup', (err, ip, family, host) => {
-                console.log('Conection from: ', ip)
-                console.log('info:')
-                console.log('family: ',family)
-                console.log('host: ',host)
-            })
             
             socket.on('data', async (data) => {
                 const dataString = data.toString();
@@ -75,14 +59,24 @@ class Server {
             socket.on('close', () => {
                 console.log('Cliente desconectado');
                 // Removes socket and info of the device disconnected
-                //if (clientInfo.timerhrst) {
-                //    clearInterval(clientInfo.timerhrst);
-                //}
-                //if (clientInfo.timerTemp) {
-                //   clearInterval(clientInfo.timerTemp);
-                //}
-                //this.clients = this.clients.filter(client => client.socket !== socket);
+                const index = this.clients.findIndex((client) => client.socket === socket);
+                if (index !== -1) {
+                    const clientInfo = this.clients[index];
+                    if (clientInfo.timerhrst) {
+                        clearInterval(clientInfo.timerhrst);
+                    }
+                    if (clientInfo.timerTemp) {
+                        clearInterval(clientInfo.timerTemp);
+                    }
+                    this.clients.splice(index, 1);
+                }
             });
+
+            socket.on('error', (error) => {
+                console.error('Error en la conexión con el cliente:', error);
+                socket.destroy(); // Cierra la conexión del socket de forma forzada
+            });
+
         });
 
         server.listen(this.port, () => {
