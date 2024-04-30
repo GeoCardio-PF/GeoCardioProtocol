@@ -51,6 +51,12 @@ class ALMessage {
                     Longitude: mensaje[3],
                     Accuracy: 0,
                 });
+
+                const newAlarm = await Alarm.create({
+                    DeviceId: id,
+                    TimeStamp: new Date(mensaje[1]),
+                    Enabled: false
+                })
             } catch (error) {
                 console.error('Error saving new Position:', error);
             }
