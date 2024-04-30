@@ -9,7 +9,7 @@ class ALMessage {
         const manufacturer = parts[0];
         const id = parts[1];
         const data = parts[3];
-
+        const length = data.length;
         if (data.split(',').length>5){
             const locData = new LocationData(data);
             
@@ -62,9 +62,9 @@ class ALMessage {
             }
        
         // Terminal response format
-        let response = `[${manufacturer}*${id}*${length}*${content}]`;
-        console.log(`Enviando: ${response}`);
-        socket.write(response);
+        //let response = `[${manufacturer}*${id}*${length}*${content}]`;
+        //console.log(`Enviando: ${response}`);
+        //socket.write(response);
         }
     }
 }
