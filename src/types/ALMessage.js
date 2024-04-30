@@ -1,5 +1,5 @@
 const LocationData = require('../models/LocationData')
-const { Position } = require('../../dbServer')
+const { Position, Alarm } = require('../../dbServer')
 //Alarm data report
 //Terminal sends alarm information to the platform after alarming
 //if the terminal has not received the reply
@@ -30,6 +30,12 @@ class ALMessage {
                     Longitude: locData.longitude,
                     Accuracy: locData.accuracy, // Asegúrate de que este valor esté disponible y sea correcto
                 });
+
+                const newAlarm = await Alarm.create({
+                    DeviceId: id,
+                    TimeStamp: new Date(locData.timestamp),
+                    Enabled: false
+                })
             } catch (error) {
                 console.error('Error saving new Position:', error);
             }

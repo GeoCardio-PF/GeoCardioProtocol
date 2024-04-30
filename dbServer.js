@@ -161,6 +161,27 @@ const Pressure = sequelize.define('Pressure', {
 	timestamps: false,
 });
 
+const Alarm = sequelize.define('Alarm', {
+	AlarmID: {
+		type: DataTypes.INTEGER,
+		primaryKey: true,
+		allowNull: false,
+		autoIncrement: true,
+	},
+	DeviceId: {
+		type: DataTypes.STRING(13),
+		allowNull: false,
+	},
+	TimeStamp: {
+		type: DataTypes.DATE,
+		allowNull: false,
+	},
+	Enabled: {
+		type: DataTypes.BOOLEAN,
+		allowNull: false,
+		defaultValue: false,
+	},
+})
 Device.hasMany(Position, {foreignKey: 'DeviceId' });
 Device.hasMany(HeartRate, {foreignKey: 'DeviceId' });
 Device.hasMany(Temperature, {foreignKey: 'DeviceId' });
@@ -185,5 +206,6 @@ module.exports = {
 	HeartRate,
 	Temperature,
 	Oxygen,
-	Pressure
+	Pressure,
+	Alarm
 };
