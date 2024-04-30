@@ -181,7 +181,10 @@ const Alarm = sequelize.define('Alarm', {
 		allowNull: false,
 		defaultValue: false,
 	},
-})
+},{
+	freezeTableName: true,
+	timestamps: false,
+});
 Device.hasMany(Position, {foreignKey: 'DeviceId' });
 Device.hasMany(HeartRate, {foreignKey: 'DeviceId' });
 Device.hasMany(Temperature, {foreignKey: 'DeviceId' });
