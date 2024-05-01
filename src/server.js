@@ -57,6 +57,7 @@ class Server {
 
                     MessageHandler.processMessage(data, socket);
                 } else {
+                    console.log(dataString);
                     socket.end();
                     return;
                 }
