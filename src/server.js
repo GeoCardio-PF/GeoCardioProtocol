@@ -20,7 +20,7 @@ class Server {
             socket.on('data', async (data) => {
                 
                 const dataString = data.toString();
-                if (dataString.startsWith('[') && dataString.endsWith(']' && dataString[4] == "*")){
+                if (dataString.startsWith('[') && dataString.endsWith(']') && dataString[4] == "*"){
                     const parts = dataString.slice(1, -1).split('*');
                     const manufacturer = parts[0];
                     const clientId = parts[1];
