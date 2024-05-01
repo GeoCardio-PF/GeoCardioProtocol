@@ -18,42 +18,47 @@ class Server {
 
             
             socket.on('data', async (data) => {
-                const dataString = data.toString();
-                const parts = dataString.slice(1, -1).split('*');
-                const manufacturer = parts[0];
-                const clientId = parts[1];
+                if (data.startsWith('[') && data.endsWith(']' && data[3] == "*")){
+                    const dataString = data.toString();
+                    const parts = dataString.slice(1, -1).split('*');
+                    const manufacturer = parts[0];
+                    const clientId = parts[1];
 
-                // Update ID of the device
-                clientInfo.clientId = clientId;
-                clientInfo.manufacturerId = manufacturer;
+                    // Update ID of the device
+                    clientInfo.clientId = clientId;
+                    clientInfo.manufacturerId = manufacturer;
 
-                try {
-                    const [device, created] = await Device.findOrCreate({
-                        where: { DeviceId: clientId },
-                        defaults: {
-                            // Default values
-                            DeviceId: clientId,
-                            Name: manufacturer,
+                    try {
+                        const [device, created] = await Device.findOrCreate({
+                            where: { DeviceId: clientId },
+                            defaults: {
+                                // Default values
+                                DeviceId: clientId,
+                                Name: manufacturer,
+                            }
+                        });
+                
+                        if (created) {
+                            console.log('Device registered:', device);
                         }
-                    });
-            
-                    if (created) {
-                        console.log('Device registered:', device);
+                    } catch (error) {
+                        console.error('Error finding or creating the entry:', error);
                     }
-                } catch (error) {
-                    console.error('Error finding or creating the entry:', error);
-                }
-                const messageLength = Buffer.byteLength(dataString);
-                const logMessage = `Mensaje recibido: ${dataString} con longitud de ${messageLength} bytes\n`;
+                    const messageLength = Buffer.byteLength(dataString);
+                    const logMessage = `Mensaje recibido: ${dataString} con longitud de ${messageLength} bytes\n`;
 
-                // Añadir al archivo log.txt de forma asíncrona
-                try {
-                    await fs.appendFile('log.txt', logMessage);
-                } catch (err) {
-                    console.error('Error:', err);
-                }
+                    // Añadir al archivo log.txt de forma asíncrona
+                    try {
+                        await fs.appendFile('log.txt', logMessage);
+                    } catch (err) {
+                        console.error('Error:', err);
+                    }
 
-                MessageHandler.processMessage(data, socket);
+                    MessageHandler.processMessage(data, socket);
+                } else {
+                    socket.end();
+                    return;
+                }
             });
 
             socket.on('close', () => {
